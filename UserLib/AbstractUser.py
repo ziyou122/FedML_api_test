@@ -47,3 +47,9 @@ class AbstractUser(HttpUser):
 
     def get_remove_group(self):
         return self.user_attr['group_id'].pop()
+
+    def set_project(self, data):
+        self.user_attr['project_id'] = data
+
+    def get_project(self):
+        return self.user_attr['project_id']

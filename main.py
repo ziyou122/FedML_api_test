@@ -18,6 +18,16 @@ from GroupTaskSetLib.QueryGroupById import QueryGroupById
 from GroupTaskSetLib.QueryGroupByUserId import QueryGroupByUserId
 from GroupTaskSetLib.TotalGroupTest import TotalGroupTest
 
+from ProjectTaskSetLib.CreateProject import CreateProject
+from ProjectTaskSetLib.QueryProjectById import QueryProjectById
+from ProjectTaskSetLib.QueryProjectByUserid import QueryProjectByUserid
+from ProjectTaskSetLib.QueryProjectByGroupid import QueryProjectByGroupid
+from ProjectTaskSetLib.TotalProjectTest import TotalProjectTest
+
+from EdgeTaskSetLib.BindDevice import BindDevice
+from EdgeTaskSetLib.QueryEdgeByUserId import QueryEdgeByUserid
+from EdgeTaskSetLib.QueryUserByDeviceId import QueryUserByDeviceid
+
 @events.test_start.add_listener
 def on_test_start(**kwargs):
     if kwargs['environment'].parsed_options.logfile:
@@ -33,4 +43,4 @@ def on_test_stop(**kwargs):
 
 class UserGroupA(RegisteredHttpUser):
     weight = 1
-    RegisteredHttpUser.tasks = [TotalGroupTest]
+    RegisteredHttpUser.tasks = [QueryUserByDeviceid]
