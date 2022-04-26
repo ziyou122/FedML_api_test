@@ -53,3 +53,9 @@ class AbstractUser(HttpUser):
 
     def get_project(self):
         return self.user_attr['project_id']
+
+    def set_edge(self, data):
+        self.user_attr['edge_id'] = data
+
+    def get_edge(self):
+        return self.user_attr['edge_id']

@@ -24,9 +24,14 @@ from ProjectTaskSetLib.QueryProjectByUserid import QueryProjectByUserid
 from ProjectTaskSetLib.QueryProjectByGroupid import QueryProjectByGroupid
 from ProjectTaskSetLib.TotalProjectTest import TotalProjectTest
 
+from EdgeTaskSetLib.CreateEdge import CreateEdge
+from EdgeTaskSetLib.UpdateEdge import UpdateEdge
+from EdgeTaskSetLib.DeleteEdge import DeleteEdge
 from EdgeTaskSetLib.BindDevice import BindDevice
+from EdgeTaskSetLib.QueryEdgeById import QueryEdgeById
 from EdgeTaskSetLib.QueryEdgeByUserId import QueryEdgeByUserid
 from EdgeTaskSetLib.QueryUserByDeviceId import QueryUserByDeviceid
+from EdgeTaskSetLib.TotalEdgeTest import TotalEdgeTest
 
 @events.test_start.add_listener
 def on_test_start(**kwargs):
@@ -43,4 +48,4 @@ def on_test_stop(**kwargs):
 
 class UserGroupA(RegisteredHttpUser):
     weight = 1
-    RegisteredHttpUser.tasks = [QueryUserByDeviceid]
+    RegisteredHttpUser.tasks = [TotalEdgeTest]
