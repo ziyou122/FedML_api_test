@@ -5,6 +5,7 @@ from CommonLib.UtilHelper import UtilHelper
 
 
 class TotalProjectTest(SequentialTaskSet):
+    # 创建project之前需要查询group信息
     @task
     def query_group_by_UserId(self):
 
@@ -84,14 +85,14 @@ class TotalProjectTest(SequentialTaskSet):
                 headers=UtilHelper.get_base_header_with_authorization(self.user.get_data()['token']),
                 catch_response=True) as response:
             if response.status_code != 200:
-                response.failure("Failed to get project by project id, StatusCode: " + str(response.status_code))
+                response.failure("Failed to get project by user id, StatusCode: " + str(response.status_code))
             else:
                 if "SUCCESS" in response.text:
                     # print('by user id')
                     # print(response.text)
                     response.success()
                 else:
-                    response.failure("Failed to get project by project id, Text: " + response.text)
+                    response.failure("Failed to get project by user id, Text: " + response.text)
 
     @task
     def query_project_by_page(self):
@@ -100,13 +101,39 @@ class TotalProjectTest(SequentialTaskSet):
 
     @task
     def update_project(self):
-        print("update project......")
-        # TODO
+        pid = self.user.get_project()
+        form_data = {'id': pid}
+
+        with self.client.put(
+                "/projects",
+                json.dumps(form_data),
+                headers=UtilHelper.get_base_header_with_authorization(self.user.get_data()['token']),
+                catch_response=True) as response:
+            print(response.text)
+            if response.status_code != 200:
+                response.failure("Failed to update project, StatusCode: " + str(response.status_code))
+            else:
+                if "SUCCESS" in response.text:
+                    # print(response.text)
+                    response.success()
+                else:
+                    response.failure("Failed to update project, Text: " + response.text)
 
     @task
     def delete_project(self):
-        print("delete project......")
-        # TODO
+        pid = self.user.get_project()
+        with self.client.delete(
+                "/projects?id=" + str(pid),
+                headers=UtilHelper.get_base_header_with_authorization(self.user.get_data()['token']),
+                catch_response=True) as response:
+            if response.status_code != 200:
+                response.failure("Failed to delete project, StatusCode: " + str(response.status_code))
+            else:
+                if "SUCCESS" in response.text:
+                    # print(response.text)
+                    response.success()
+                else:
+                    response.failure("Failed to delete project, Text: " + response.text)
 
 
     @task

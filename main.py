@@ -23,6 +23,8 @@ from ProjectTaskSetLib.QueryProjectById import QueryProjectById
 from ProjectTaskSetLib.QueryProjectByUserid import QueryProjectByUserid
 from ProjectTaskSetLib.QueryProjectByGroupid import QueryProjectByGroupid
 from ProjectTaskSetLib.TotalProjectTest import TotalProjectTest
+from ProjectTaskSetLib.DeleteProject import DeleteProject
+from ProjectTaskSetLib.QueryProjectByPage import QueryProjectByPage
 
 from EdgeTaskSetLib.CreateEdge import CreateEdge
 from EdgeTaskSetLib.UpdateEdge import UpdateEdge
@@ -32,6 +34,23 @@ from EdgeTaskSetLib.QueryEdgeById import QueryEdgeById
 from EdgeTaskSetLib.QueryEdgeByUserId import QueryEdgeByUserid
 from EdgeTaskSetLib.QueryUserByDeviceId import QueryUserByDeviceid
 from EdgeTaskSetLib.TotalEdgeTest import TotalEdgeTest
+
+from RunTaskSetLib.CreateRun import CreateRun
+from RunTaskSetLib.UpdateRun import UpdateRun
+from RunTaskSetLib.DeleteRun import DeleteRun
+from RunTaskSetLib.QueryRunById import QueryRunById
+from RunTaskSetLib.QueryRunByProjectid import QueryRunByProjectId
+from RunTaskSetLib.QueryRunByGroupid import QueryRunByGroupid
+from RunTaskSetLib.QueryRunByUserid import QueryRunByUserid
+from RunTaskSetLib.TotalRunTest import TotalRunTest
+
+from ChartTaskSetLib.CreateChart import CreateChart
+from ChartTaskSetLib.DeleteChart import DeleteChart
+from ChartTaskSetLib.UpdateChart import UpdateChart
+from ChartTaskSetLib.QueryChartById import QueryChartById
+from ChartTaskSetLib.QueryChartByPage import QueryChartByPage
+from ChartTaskSetLib.QueryChartByUserid import QueryChartByUserid
+from ChartTaskSetLib.TotalChartTest import TotalChartTest
 
 @events.test_start.add_listener
 def on_test_start(**kwargs):
@@ -48,4 +67,4 @@ def on_test_stop(**kwargs):
 
 class UserGroupA(RegisteredHttpUser):
     weight = 1
-    RegisteredHttpUser.tasks = [TotalEdgeTest]
+    RegisteredHttpUser.tasks = [TotalChartTest]

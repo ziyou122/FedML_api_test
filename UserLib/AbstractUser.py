@@ -59,3 +59,15 @@ class AbstractUser(HttpUser):
 
     def get_edge(self):
         return self.user_attr['edge_id']
+
+    def set_run(self, data):
+        self.user_attr['run_id'] = data
+
+    def get_run(self):
+        return self.user_attr['run_id']
+
+    def set_chart(self, data):
+        self.user_attr['chart_id'] = data
+
+    def get_chart(self):
+        return self.user_attr['chart_id']
