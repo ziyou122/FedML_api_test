@@ -124,19 +124,80 @@ class TotalRunTest(SequentialTaskSet):
                     response.failure("Failed to update run, Text: " + response.text)
 
     @task
+    def create_edge(self):
+        uid = self.user.get_data()['id']
+        form_data = {'name': "edge_test_" + str(UtilHelper.get_random_string(5)), 'accountid': uid, 'deviceid': '1'}
+
+        with self.client.post(
+                "/edges",
+                json.dumps(form_data),
+                headers=UtilHelper.get_base_header_with_authorization(self.user.get_data()['token']),
+                catch_response=True) as response:
+            if response.status_code != 200:
+                response.failure("Failed to create edge, StatusCode: " + str(response.status_code))
+            else:
+                if "SUCCESS" in response.text:
+                    self.user.set_edge(eval(response.text)['data'])
+                    response.success()
+                else:
+                    response.failure("Failed to create edge, Text: " + response.text)
+
+    @task
     def start_run(self):
-        print("run start......")
-        #     TODO
+        pid = self.user.get_project()
+        # uid = self.user.get_data()['id']
+        gid = self.user.get_group()
+        eid = self.user.get_edge()
+        form_data = {'projectid': pid, 'groupid': gid, 'name': "run_test_" + str(UtilHelper.get_random_string(5)), 'urls': {}, 'edgeids': [eid]}
+
+        with self.client.post(
+                "/runs/start",
+                json.dumps(form_data),
+                headers=UtilHelper.get_base_header_with_authorization(self.user.get_data()['token']),
+                catch_response=True) as response:
+            if response.status_code != 200:
+                response.failure("Failed to create run, StatusCode: " + str(response.status_code))
+            else:
+                if "SUCCESS" in response.text:
+                    response.success()
+                else:
+                    response.failure("Failed to create run, Text: " + response.text)
 
     @task
     def stop_run(self):
-        print("run stop......")
-        #     TODO
+        rid = self.user.get_run()
+        form_data = {'key': rid, 'server': '', 'servertype':''}
+
+        with self.client.post(
+                "/runs/stop",
+                json.dumps(form_data),
+                headers=UtilHelper.get_base_header_with_authorization(self.user.get_data()['token']),
+                catch_response=True) as response:
+            if response.status_code != 200:
+                response.failure("Failed to stop run, StatusCode: " + str(response.status_code))
+            else:
+                if "SUCCESS" in response.text:
+                    response.success()
+                else:
+                    response.failure("Failed to stop run, Text: " + response.text)
 
     @task
     def run_callback(self):
-        print("callback......")
-        #     TODO
+        rid = self.user.get_run()
+        form_data = {'key': rid, 'server': '', 'servertype': ''}
+
+        with self.client.post(
+                "/runs/runCallback",
+                json.dumps(form_data),
+                headers=UtilHelper.get_base_header_with_authorization(self.user.get_data()['token']),
+                catch_response=True) as response:
+            if response.status_code != 200:
+                response.failure("Failed to run callback, StatusCode: " + str(response.status_code))
+            else:
+                if "SUCCESS" in response.text:
+                    response.success()
+                else:
+                    response.failure("Failed to run callback, Text: " + response.text)
 
     @task
     def delete_run(self):
@@ -152,6 +213,22 @@ class TotalRunTest(SequentialTaskSet):
                     response.success()
                 else:
                     response.failure("Failed to delete run, Text: " + response.text)
+
+    @task
+    def delete_edge(self):
+        # eid = self.user.get_edge()
+
+        with self.client.delete(
+                "/edges?id=127",
+                headers=UtilHelper.get_base_header_with_authorization(self.user.get_data()['token']),
+                catch_response=True) as response:
+            if response.status_code != 200:
+                response.failure("Failed to delete edge StatusCode: " + str(response.status_code))
+            else:
+                if "SUCCESS" in response.text:
+                    response.success()
+                else:
+                    response.failure("Failed to delete edge, Text: " + response.text)
 
     @task
     def exit_task_execution(self):

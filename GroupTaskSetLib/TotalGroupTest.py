@@ -24,6 +24,26 @@ class TotalGroupTest(SequentialTaskSet):
                     response.failure("Failed to create group, Text: " + response.text)
 
     @task
+    def update_group(self):
+        gid = self.user.get_group()
+        uid = self.user.get_data()['id']
+        form_data = {'id': gid}
+
+        with self.client.put(
+                "/groups",
+                json.dumps(form_data),
+                headers=UtilHelper.get_base_header_with_authorization(self.user.get_data()['token']),
+                catch_response=True) as response:
+            print(response.text)
+            if response.status_code != 200:
+                response.failure("Failed to update group, StatusCode: " + str(response.status_code))
+            else:
+                if "SUCCESS" in response.text:
+                    response.success()
+                else:
+                    response.failure("Failed to update group, Text: " + response.text)
+
+    @task
     def query_group_by_id(self):
         with self.client.get(
                 "/groups?id="+str(self.user.get_group()),

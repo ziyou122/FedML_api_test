@@ -11,12 +11,19 @@ from UserTaskSetLib.QueryUserById import QueryUserById
 from UserTaskSetLib.QueryUserByName import QueryUserByName
 from UserTaskSetLib.QueryUserFriendsById import QueryUserFriendsById
 from UserTaskSetLib.UpdateUserInfo import UpdateUserInfo
+from UserTaskSetLib.TotalUserTest import TotalUserTest
+
+from ContactTaskSetLib.AddContact import AddContact
+
+from FileTaskSetLib.UploadFile import UploadFile
 
 from GroupTaskSetLib.CreateGroup import CreateGroup
 from GroupTaskSetLib.DeleteGroup import DeleteGroup
 from GroupTaskSetLib.QueryGroupById import QueryGroupById
 from GroupTaskSetLib.QueryGroupByUserId import QueryGroupByUserId
+from GroupTaskSetLib.UpdateGroup import UpdateGroup
 from GroupTaskSetLib.TotalGroupTest import TotalGroupTest
+
 
 from ProjectTaskSetLib.CreateProject import CreateProject
 from ProjectTaskSetLib.QueryProjectById import QueryProjectById
@@ -52,6 +59,13 @@ from ChartTaskSetLib.QueryChartByPage import QueryChartByPage
 from ChartTaskSetLib.QueryChartByUserid import QueryChartByUserid
 from ChartTaskSetLib.TotalChartTest import TotalChartTest
 
+from ReportTaskSetLib.CreateReport import CreateReport
+from ReportTaskSetLib.DeleteReport import DeleteReport
+from ReportTaskSetLib.GetReportList import GetReportList
+from ReportTaskSetLib.UpdateReportDetails import UpdateReportDetails
+from ReportTaskSetLib.UpdateReportItem import UpdateReportItems
+from ReportTaskSetLib.TotalReportTest import TotalReportTest
+
 @events.test_start.add_listener
 def on_test_start(**kwargs):
     if kwargs['environment'].parsed_options.logfile:
@@ -67,4 +81,4 @@ def on_test_stop(**kwargs):
 
 class UserGroupA(RegisteredHttpUser):
     weight = 1
-    RegisteredHttpUser.tasks = [TotalChartTest]
+    RegisteredHttpUser.tasks = [TotalReportTest]

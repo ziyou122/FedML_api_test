@@ -102,7 +102,7 @@ class TotalProjectTest(SequentialTaskSet):
     @task
     def update_project(self):
         pid = self.user.get_project()
-        form_data = {'id': pid}
+        form_data = {'id': pid, 'name':'updated project', 'threshold': '1'}
 
         with self.client.put(
                 "/projects",

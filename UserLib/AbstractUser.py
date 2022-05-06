@@ -71,3 +71,15 @@ class AbstractUser(HttpUser):
 
     def get_chart(self):
         return self.user_attr['chart_id']
+
+    def set_report(self, data):
+        self.user_attr['report_id'] = data
+
+    def get_report(self):
+        return self.user_attr['report_id']
+
+    def set_device(self, data):
+        self.user_attr['device_id'] = data
+
+    def get_device(self):
+        return self.user_attr['device_id']

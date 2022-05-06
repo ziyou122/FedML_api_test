@@ -19,11 +19,12 @@ class TotalEdgeTest(SequentialTaskSet):
                 json.dumps(form_data),
                 headers=UtilHelper.get_base_header_with_authorization(self.user.get_data()['token']),
                 catch_response=True) as response:
+            print(response.text)
             if response.status_code != 200:
-                # print(response.text)
                 response.failure("Failed to get group by user id, StatusCode: " + str(response.status_code))
             else:
                 if "SUCCESS" in response.text:
+                    self.user.set_device(eval(response.text)['data'])
                     response.success()
                 else:
                     response.failure("Failed to get group by user id, Text: " + response.text)
@@ -150,8 +151,19 @@ class TotalEdgeTest(SequentialTaskSet):
     # 8. query edge by run id
     @task
     def query_edge_by_runid(self):
-        print("query edge by run id......")
-        # TODO
+        form_data = {'run_id': '111', "num_per_page": 100, "request_page_num": 1}
+        with self.client.post(
+                "/edges/getEdgesByRunId",
+                json.dumps(form_data),
+                headers=UtilHelper.get_base_header_with_authorization(self.user.get_data()['token']),
+                catch_response=True) as response:
+            if response.status_code != 200:
+                response.failure("Failed to get edge by device id, StatusCode: " + str(response.status_code))
+            else:
+                if "SUCCESS" in response.text:
+                    response.success()
+                else:
+                    response.failure("Failed to get edge by device id, Text: " + response.text)
 
     # 9.delete this edge
     @task
@@ -173,8 +185,19 @@ class TotalEdgeTest(SequentialTaskSet):
     # 10 unbound device
     @task
     def unbound_device(self):
-        print("unbound device......")
-        # TODO
+        did = self.user.get_device()['id']
+        with self.client.post(
+                "/edges/unbound?id="+str(did),
+                headers=UtilHelper.get_base_header_with_authorization(self.user.get_data()['token']),
+                catch_response=True) as response:
+            print(response.text)
+            if response.status_code != 200:
+                response.failure("Failed to unbound device, StatusCode: " + str(response.status_code))
+            else:
+                if "SUCCESS" in response.text:
+                    response.success()
+                else:
+                    response.failure("Failed to unbound device, Text: " + response.text)
 
     @task
     def exit_task_execution(self):

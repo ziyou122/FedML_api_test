@@ -1,14 +1,21 @@
 from locust import task, SequentialTaskSet
 from CommonLib.LogModule import *
 from CommonLib.UtilHelper import UtilHelper
+import os
+import json
 
-class QueryUserFriendsById(SequentialTaskSet):
+class UploadFile(SequentialTaskSet):
     @task
-    def fetch_user_information(self):
-
-        uid = self.user.get_data()['id']
-        with self.client.get(
-                "/account/friends?key="+str(uid), headers=UtilHelper.get_base_header_with_authorization(self.user.get_data()['token']), catch_response=True) as response:
+    def upload_file(self):
+        with open(os.path.dirname(__file__)+"\\..\\Data\\img_avatar.png", "rb") as f:
+            img_bin = f.read()
+        data = {'file': img_bin}
+        with self.client.post(
+                "/files/upload",
+                data,
+                headers=UtilHelper.get_multipart_header_with_authorization(self.user.get_data()['token']),
+                catch_response=True) as response:
+            print(response.text)
             if response.status_code != 200:
                 response.failure("Failed to upload avatar, StatusCode: " + str(response.status_code))
             else:

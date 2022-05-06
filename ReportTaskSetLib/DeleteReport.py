@@ -1,25 +1,29 @@
 from locust import task, SequentialTaskSet
+import json
 from CommonLib.LogModule import *
 from CommonLib.UtilHelper import UtilHelper
 
 
-class QueryUserByDeviceid(SequentialTaskSet):
+class DeleteReport(SequentialTaskSet):
 
+    # # 删除刚创建的project
     @task
-    def query_edge_by_deviceid(self):
-
-        with self.client.get(
-                "/edges/device?id=1",
+    def delete_report(self):
+        print(self.user.get_data())
+        form_data = {"report_id": 16}
+        with self.client.delete(
+                "/reports/deleteReport",
+                json.dumps(form_data),
                 headers=UtilHelper.get_base_header_with_authorization(self.user.get_data()['token']),
                 catch_response=True) as response:
             if response.status_code != 200:
-                response.failure("Failed to get edge by device id, StatusCode: " + str(response.status_code))
+                response.failure("Failed to delete group, StatusCode: " + str(response.status_code))
             else:
                 if "SUCCESS" in response.text:
                     print(response.text)
                     response.success()
                 else:
-                    response.failure("Failed to get edge by device id, Text: " + response.text)
+                    response.failure("Failed to delete group, Text: " + response.text)
 
     @task
     def exit_task_execution(self):

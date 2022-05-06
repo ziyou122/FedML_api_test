@@ -4,26 +4,23 @@ from CommonLib.LogModule import *
 from CommonLib.UtilHelper import UtilHelper
 
 
-class CreateEdge(SequentialTaskSet):
-
+class GetReportList(SequentialTaskSet):
     @task
-    def create_edge(self):
-        uid = self.user.get_data()['id']
-        form_data = {'name': "edge_test_"+str(UtilHelper.get_random_string(5)), 'accountid': uid, 'deviceid': '1'}
-
+    def get_report_list(self):
+        form_data = {"project_id":"208","num_per_page":999,"requst_page_num":1}
         with self.client.post(
-                "/edges",
+                "/reports/getReportList",
                 json.dumps(form_data),
                 headers=UtilHelper.get_base_header_with_authorization(self.user.get_data()['token']),
                 catch_response=True) as response:
             if response.status_code != 200:
-                response.failure("Failed to create edge, StatusCode: " + str(response.status_code))
+                response.failure("Failed to get project by project id, StatusCode: " + str(response.status_code))
             else:
                 if "SUCCESS" in response.text:
-                    self.user.set_edge(eval(response.text)['data'])
+                    print(response.text)
                     response.success()
                 else:
-                    response.failure("Failed to create edge, Text: " + response.text)
+                    response.failure("Failed to get project by project id, Text: " + response.text)
 
     @task
     def exit_task_execution(self):
